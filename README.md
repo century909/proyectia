@@ -1,4 +1,4 @@
-# Tipsy Chat App
+# Seiki Chat App
 
 A chat application with AI characters, built with React, Node.js, and PostgreSQL.
 

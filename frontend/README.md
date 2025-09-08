@@ -1,6 +1,6 @@
-# Tipsy Chat - Frontend
+# Seiki Chat - Frontend
 
-This is the frontend for the Tipsy Chat application built with React and SCSS.
+This is the frontend for the Seiki Chat application built with React and SCSS.
 
 ## Setup
 

@@ -1,10 +1,10 @@
-# Tipsy Chat App - Documentación Técnica
+# Seiki Chat App - Documentación Técnica
 
 **⚠️ FASE DE DESARROLLO - NO LISTO PARA PRODUCCIÓN ⚠️**
 
 ## Descripción General
 
-Tipsy Chat es una aplicación de chat con personajes de IA que permite a los usuarios crear y conversar con personajes personalizados. La aplicación utiliza un sistema de tokens para monetizar las interacciones entre usuarios y personajes.
+Seiki Chat es una aplicación de chat con personajes de IA que permite a los usuarios crear y conversar con personajes personalizados. La aplicación utiliza un sistema de tokens para monetizar las interacciones entre usuarios y personajes.
 
 ## Tecnologías Utilizadas
 

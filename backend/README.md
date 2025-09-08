@@ -1,6 +1,6 @@
-# Tipsy Chat - Backend
+# Seiki Chat - Backend
 
-This is the backend API for the Tipsy Chat application built with Node.js and Express.
+This is the backend API for the Seiki Chat application built with Node.js and Express.
 
 ## Setup
 

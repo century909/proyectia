@@ -49,7 +49,7 @@ const verifyToken = (req, res, next) => {
 
 // Routes
 app.get('/', (req, res) => {
-  res.json({ message: 'Tipsy Chat API is running!' });
+  res.json({ message: 'Seiki Chat API is running!' });
 });
 
 // Register endpoint
@@ -463,5 +463,5 @@ app.post('/api/users/tokens/purchase', verifyToken, (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Tipsy Chat API is running on port ${PORT}`);
+  console.log(`Seiki Chat API is running on port ${PORT}`);
 });

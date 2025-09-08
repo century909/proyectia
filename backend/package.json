@@ -1,7 +1,7 @@
 {
   "name": "tipsy-chat-backend",
   "version": "1.0.0",
-  "description": "Backend for Tipsy Chat application",
+  "description": "Backend for Seiki Chat application",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",

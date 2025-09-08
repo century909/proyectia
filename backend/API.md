@@ -1,4 +1,4 @@
-# Tipsy Chat API Endpoints
+# Seiki Chat API Endpoints
 
 ## Authentication
 

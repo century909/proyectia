@@ -1,4 +1,4 @@
--- Tipsy Chat Database Schema (PostgreSQL)
+-- Seiki Chat Database Schema (PostgreSQL)
 
 -- Users table
 CREATE TABLE users (

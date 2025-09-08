@@ -65,7 +65,7 @@ const Register = () => {
             Create your account
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Get started with Tipsy Chat
+            Get started with Seiki Chat
           </p>
         </div>
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">

@@ -38,7 +38,7 @@ const Dashboard = () => {
       <div className="dashboard__header">
         <div className="dashboard__header-container">
           <div className="dashboard__header-content">
-            <h1 className="dashboard__title animate-fade-in">Tipsy Chat</h1>
+            <h1 className="dashboard__title animate-fade-in">Seiki Chat</h1>
             <div className="dashboard__header-actions">
               <span className="dashboard__tokens animate-fade-in hover:scale-105">
                 99 tokens

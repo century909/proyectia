@@ -2,7 +2,7 @@
 
 ## Overview
 
-To implement real-time chat functionality in Tipsy Chat, we'll use Socket.IO, which enables real-time, bidirectional communication between clients and the server.
+To implement real-time chat functionality in Seiki Chat, we'll use Socket.IO, which enables real-time, bidirectional communication between clients and the server.
 
 ## Backend Implementation
 
@@ -77,7 +77,7 @@ io.on('connection', (socket) => {
 
 // Change app.listen to server.listen
 server.listen(PORT, () => {
-  console.log(`Tipsy Chat API is running on port ${PORT}`);
+  console.log(`Seiki Chat API is running on port ${PORT}`);
 });
 ```
 

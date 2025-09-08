@@ -1,6 +1,6 @@
-# Tipsy Chat - Database
+# Seiki Chat - Database
 
-This directory contains the database schema for the Tipsy Chat application.
+This directory contains the database schema for the Seiki Chat application.
 
 ## Schema Overview
 
