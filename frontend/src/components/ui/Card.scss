@@ -1,0 +1,15 @@
+// Estilos para el componente Card
+.card {
+  background-color: rgba(255, 255, 255, 0.95);
+  overflow: hidden;
+  box-shadow: $shadow-lg;
+  border-radius: $border-radius-xl;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  transition: $transition-medium;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $shadow-xl;
+  }
+}

@@ -1,9 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
+import { useToast } from '../contexts/ToastContext';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  const { addToast } = useToast();
+  
   // Dummy data for demonstration
   const characters = [
     { id: 1, name: 'Sassy Sue', description: 'A witty bartender with a sharp tongue' },
@@ -17,22 +21,32 @@ const Dashboard = () => {
     { id: 3, character: 'Techy Tom', title: 'Latest Gadgets', lastMessage: 'Have you seen the new smartphone?', timestamp: '3 days ago' }
   ];
 
+  const handleCreateCharacter = () => {
+    addToast('Redirecting to character creation...', 'info');
+    navigate('/character/create');
+  };
+
+  const handleChatWithCharacter = (characterId, characterName) => {
+    addToast(`Starting chat with ${characterName}...`, 'success');
+    // Navigate to the chat with the specific character
+    navigate(`/chat/${characterId}`);
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50">
+    <div className="dashboard">
       {/* Header */}
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900 animate-fade-in">Tipsy Chat</h1>
-            <div className="flex items-center space-x-4">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 animate-fade-in">
+      <div className="dashboard__header">
+        <div className="dashboard__header-container">
+          <div className="dashboard__header-content">
+            <h1 className="dashboard__title animate-fade-in">Tipsy Chat</h1>
+            <div className="dashboard__header-actions">
+              <span className="dashboard__tokens animate-fade-in hover:scale-105">
                 99 tokens
               </span>
               <Button
-                as={Link}
-                to="/character/create"
                 variant="primary"
-                className="animate-fade-in"
+                className="animate-fade-in hover:scale-105"
+                onClick={handleCreateCharacter}
               >
                 Create Character
               </Button>
@@ -41,42 +55,39 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="dashboard__content">
+        <div className="dashboard__grid">
           {/* Characters section */}
-          <div className="animate-slide-in-left">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-medium text-gray-900">Your Characters</h2>
-              <Link to="/character/create" className="text-primary-600 hover:text-primary-900 text-sm font-medium transition-colors duration-200">
+          <div className="dashboard__section animate-slide-in-left">
+            <div className="dashboard__section-header">
+              <h2 className="dashboard__section-title">Your Characters</h2>
+              <Link to="/character/create" className="dashboard__create-link hover:scale-105">
                 + Create New
               </Link>
             </div>
-            <div className="space-y-4">
+            <div className="dashboard__characters">
               {characters.map((character, index) => (
-                <div key={character.id} style={{ animationDelay: `${index * 0.1}s` }} className="animate-fade-in">
+                <div key={character.id} style={{ animationDelay: `${index * 0.1}s` }} className="dashboard__character animate-fade-in-up">
                   <Card>
-                    <div className="px-4 py-5 sm:p-6">
-                      <div className="flex items-start">
-                        <div className="flex-shrink-0">
-                          <div className="bg-gradient-to-br from-primary-400 to-secondary-500 rounded-xl w-16 h-16 flex items-center justify-center text-white font-bold text-xl transition-transform duration-300 hover:scale-105">
-                            {character.name.charAt(0)}
-                          </div>
+                    <div className="dashboard__character-content">
+                      <div className="dashboard__character-avatar">
+                        <div className="dashboard__character-avatar-inner">
+                          {character.name.charAt(0)}
                         </div>
-                        <div className="ml-4 flex-1">
-                          <h3 className="text-lg font-medium text-gray-900">{character.name}</h3>
-                          <p className="mt-1 text-sm text-gray-500">{character.description}</p>
-                        </div>
-                        <div className="flex items-center">
-                          <Button
-                            as={Link}
-                            to={`/chat/${character.id}`}
-                            variant="outline"
-                            size="sm"
-                            className="transition-fast hover:shadow-md"
-                          >
-                            Chat
-                          </Button>
-                        </div>
+                      </div>
+                      <div className="dashboard__character-info">
+                        <h3 className="dashboard__character-name">{character.name}</h3>
+                        <p className="dashboard__character-description">{character.description}</p>
+                      </div>
+                      <div className="dashboard__character-actions">
+                        <Button
+                          variant="outline"
+                          size="md"
+                          className="transition-medium hover:scale-105"
+                          onClick={() => handleChatWithCharacter(character.id, character.name)}
+                        >
+                          Chat
+                        </Button>
                       </div>
                     </div>
                   </Card>
@@ -86,30 +97,30 @@ const Dashboard = () => {
           </div>
 
           {/* Conversations section */}
-          <div className="animate-slide-in-right">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">Recent Conversations</h2>
-            <div className="space-y-4">
+          <div className="dashboard__section animate-slide-in-right">
+            <div className="dashboard__section-header">
+              <h2 className="dashboard__section-title">Recent Conversations</h2>
+            </div>
+            <div className="dashboard__conversations">
               {conversations.map((conversation, index) => (
-                <div key={conversation.id} style={{ animationDelay: `${index * 0.1}s` }} className="animate-fade-in">
+                <div key={conversation.id} style={{ animationDelay: `${index * 0.1}s` }} className="dashboard__conversation animate-fade-in-up">
                   <Card>
-                    <Link to={`/chat/${conversation.id}`} className="block hover:bg-gray-50 transition-colors duration-150 rounded-lg">
-                      <div className="px-4 py-5 sm:p-6">
-                        <div className="flex justify-between">
-                          <div>
-                            <h3 className="text-lg font-medium text-gray-900">
-                              <span className="text-primary-600">{conversation.character}</span>
-                              <span className="text-gray-500"> &middot; {conversation.title}</span>
-                            </h3>
-                            <p className="mt-1 text-sm text-gray-500 truncate max-w-md">
-                              {conversation.lastMessage}
-                            </p>
-                          </div>
-                          <div className="text-sm text-gray-500 whitespace-nowrap">
-                            {conversation.timestamp}
-                          </div>
+                    <div className="dashboard__conversation-link" onClick={() => navigate(`/chat/${conversation.id}`)}>
+                      <div className="dashboard__conversation-content">
+                        <div className="dashboard__conversation-info">
+                          <h3 className="dashboard__conversation-title">
+                            <span className="dashboard__conversation-character">{conversation.character}</span>
+                            <span className="dashboard__conversation-divider"> · {conversation.title}</span>
+                          </h3>
+                          <p className="dashboard__conversation-message">
+                            {conversation.lastMessage}
+                          </p>
+                        </div>
+                        <div className="dashboard__conversation-timestamp">
+                          {conversation.timestamp}
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   </Card>
                 </div>
               ))}

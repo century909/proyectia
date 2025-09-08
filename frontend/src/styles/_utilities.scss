@@ -1,0 +1,120 @@
+// Global Styles Enhancements
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba($color-gray-100, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $color-primary-300;
+  border-radius: 4px;
+  
+  &:hover {
+    background: $color-primary-500;
+  }
+}
+
+// Selection color
+::selection {
+  background: rgba($color-primary-500, 0.3);
+}
+
+// Focus visible
+:focus-visible {
+  outline: 2px solid $color-primary-500;
+  outline-offset: 2px;
+}
+
+// Links
+a {
+  color: $color-primary-600;
+  text-decoration: none;
+  transition: $transition-medium;
+  
+  &:hover {
+    color: $color-primary-800;
+    text-decoration: underline;
+  }
+}
+
+// Utility classes for background gradients
+.bg-gradient-primary {
+  background: $gradient-primary;
+}
+
+.bg-gradient-secondary {
+  background: $gradient-secondary;
+}
+
+.bg-gradient-accent {
+  background: $gradient-accent;
+}
+
+// Utility classes for shadows
+.shadow-primary {
+  box-shadow: 0 0 15px rgba($color-primary-500, 0.3);
+}
+
+.shadow-secondary {
+  box-shadow: 0 0 15px rgba($color-secondary-500, 0.3);
+}
+
+.shadow-accent {
+  box-shadow: 0 0 15px rgba($color-accent-500, 0.3);
+}
+
+// Glassmorphism effect
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Hover effects
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+// Text gradients
+.text-gradient-primary {
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.text-gradient-secondary {
+  background: $gradient-secondary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.text-gradient-accent {
+  background: $gradient-accent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}

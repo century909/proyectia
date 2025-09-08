@@ -1,0 +1,60 @@
+// Estilos para el componente Input
+.input-container {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.input-label {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-gray-700;
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  border-radius: $border-radius-lg;
+  border: 2px solid $color-gray-200;
+  box-shadow: $shadow-sm;
+  font-size: $font-size-base;
+  line-height: 1.5rem;
+  padding: 0.75rem 1rem;
+  transition: $transition-medium;
+  background-color: rgba(255, 255, 255, 0.8);
+  
+  &:focus {
+    outline: none;
+    border-color: $color-primary-500;
+    box-shadow: 0 0 0 4px rgba($color-primary-500, 0.2);
+    background-color: white;
+  }
+  
+  &--error {
+    border-color: $color-danger-300;
+    
+    &:focus {
+      border-color: $color-danger-500;
+      box-shadow: 0 0 0 4px rgba($color-danger-500, 0.2);
+    }
+  }
+  
+  // Placeholder styling
+  &::placeholder {
+    color: $color-gray-400;
+  }
+}
+
+.input-error {
+  margin-top: 0.5rem;
+  font-size: $font-size-sm;
+  color: $color-danger-600;
+  display: flex;
+  align-items: center;
+  
+  &::before {
+    content: "⚠";
+    margin-right: 0.5rem;
+  }
+}

@@ -1,12 +1,13 @@
 import React from 'react';
+import '../../index.scss'; // Importar variables de estilo
 
 const Card = ({ 
   children, 
   className = '', 
   ...props 
 }) => {
-  const baseClasses = 'bg-white overflow-hidden shadow rounded-lg';
-  const classes = `${baseClasses} ${className}`;
+  const baseClass = 'card';
+  const classes = `${baseClass} ${className}`;
   
   return (
     <div className={classes} {...props}>

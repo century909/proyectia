@@ -1,6 +1,6 @@
 # Tipsy Chat - Frontend
 
-This is the frontend for the Tipsy Chat application built with React and TailwindCSS.
+This is the frontend for the Tipsy Chat application built with React and SCSS.
 
 ## Setup
 

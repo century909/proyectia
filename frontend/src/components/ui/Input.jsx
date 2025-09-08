@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../index.scss'; // Importar variables de estilo
 
 const Input = ({ 
   label, 
@@ -7,14 +8,14 @@ const Input = ({
   className = '', 
   ...props 
 }) => {
-  const baseClasses = 'block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm';
-  const errorClasses = error ? 'border-accent-300 focus:border-accent-500 focus:ring-accent-500' : '';
-  const classes = `${baseClasses} ${errorClasses} ${className}`;
+  const baseClass = 'input';
+  const errorClass = error ? 'input--error' : '';
+  const classes = `${baseClass} ${errorClass} ${className}`;
   
   return (
-    <div className="w-full">
+    <div className="input-container">
       {label && (
-        <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor={id} className="input-label">
           {label}
         </label>
       )}
@@ -24,7 +25,7 @@ const Input = ({
         {...props}
       />
       {error && (
-        <p className="mt-1 text-sm text-accent-600">{error}</p>
+        <p className="input-error">{error}</p>
       )}
     </div>
   );

@@ -1,0 +1,37 @@
+
+.chat-message-container {
+  display: flex;
+  &.user-message {
+    justify-content: flex-end;
+  }
+  &.character-message {
+    justify-content: flex-start;
+  }
+}
+
+.message-bubble-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 16rem; // Equivalent to max-w-xs (256px)
+  @media (min-width: 768px) { // Equivalent to md:max-w-md (28rem = 448px)
+    max-width: 28rem;
+  }
+}
+
+.message-bubble {
+  padding: 0.5rem 1rem; // Equivalent to px-4 py-2
+  border-radius: 0.5rem; // Equivalent to rounded-lg
+
+  &.user-bubble {
+    background: linear-gradient(to right, var(--color-primary-500), var(--color-primary-600));
+    color: white; // Assuming white is defined or default
+    border-bottom-left-radius: 0; // Equivalent to rounded-bl-none
+  }
+
+  &.character-bubble {
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-800);
+    border-bottom-right-radius: 0; // Equivalent to rounded-br-none
+  }
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); // Equivalent to shadow-sm
+}

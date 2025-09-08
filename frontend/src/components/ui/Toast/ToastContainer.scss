@@ -1,0 +1,10 @@
+// Toast container styles
+.toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: $z-index-tooltip;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
