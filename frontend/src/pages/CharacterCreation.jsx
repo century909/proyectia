@@ -3,49 +3,58 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import Card from '../components/ui/Card';
+import { useToast } from '../contexts/ToastContext';
+import { useFormValidation, validationRules } from '../hooks/useFormValidation';
+import { createCharacter } from '../services/characters';
 
 const CharacterCreation = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    personality: ''
-  });
-  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
-  const validate = () => {
-    const newErrors = {};
-    if (!formData.name) newErrors.name = 'Character name is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    validateForm
+  } = useFormValidation(
+    { name: '', description: '', personality: '' },
+    {
+      name: [
+        validationRules.required('El nombre del personaje es requerido'),
+        validationRules.minLength(2, 'Mínimo 2 caracteres'),
+        validationRules.maxLength(50, 'Máximo 50 caracteres')
+      ],
+      description: [
+        validationRules.maxLength(500, 'Máximo 500 caracteres')
+      ],
+      personality: [
+        validationRules.maxLength(200, 'Máximo 200 caracteres')
+      ]
+    }
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validateForm()) return;
     
     setLoading(true);
-    setErrors({});
     
     try {
-      // Simulate API call
-      setTimeout(() => {
-        // For demo purposes, we'll just navigate to dashboard
-        // In a real app, you would call your API here
-        navigate('/');
-        setLoading(false);
-      }, 1000);
+      await createCharacter({
+        name: values.name,
+        description: values.description,
+        personality: values.personality
+      });
+      
+      addToast('¡Personaje creado exitosamente!', 'success');
+      navigate('/');
     } catch (err) {
-      console.error('Error creating character:', err);
+      const errorMessage = err.message || 'Error al crear el personaje. Inténtalo de nuevo.';
+      addToast(errorMessage, 'error');
+    } finally {
       setLoading(false);
     }
   };
@@ -72,9 +81,10 @@ const CharacterCreation = () => {
                   name="name"
                   type="text"
                   required
-                  value={formData.name}
-                  onChange={handleChange}
-                  error={errors.name}
+                  value={values.name}
+                  onChange={(e) => handleChange('name', e.target.value)}
+                  onBlur={() => handleBlur('name')}
+                  error={touched.name ? errors.name : ''}
                   placeholder="e.g. Sassy Sue"
                 />
               </div>
@@ -88,11 +98,19 @@ const CharacterCreation = () => {
                     id="description"
                     name="description"
                     rows={4}
-                    value={formData.description}
-                    onChange={handleChange}
-                    className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm"
+                    value={values.description}
+                    onChange={(e) => handleChange('description', e.target.value)}
+                    onBlur={() => handleBlur('description')}
+                    className={`block w-full rounded-md shadow-sm sm:text-sm ${
+                      touched.description && errors.description
+                        ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                        : 'border-gray-300 focus:border-primary-500 focus:ring-primary-500'
+                    }`}
                     placeholder="Describe your character's appearance, background, etc."
                   />
+                  {touched.description && errors.description && (
+                    <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+                  )}
                 </div>
               </div>
 
@@ -102,8 +120,10 @@ const CharacterCreation = () => {
                   label="Personality Traits"
                   name="personality"
                   type="text"
-                  value={formData.personality}
-                  onChange={handleChange}
+                  value={values.personality}
+                  onChange={(e) => handleChange('personality', e.target.value)}
+                  onBlur={() => handleBlur('personality')}
+                  error={touched.personality ? errors.personality : ''}
                   placeholder="e.g. witty, sarcastic, knowledgeable"
                 />
               </div>
@@ -114,7 +134,7 @@ const CharacterCreation = () => {
                     <div className="space-y-4">
                       <div className="flex justify-center">
                         <div className="bg-gradient-to-br from-primary-400 to-secondary-500 rounded-full w-20 h-20 flex items-center justify-center text-white font-bold text-2xl">
-                          {formData.name ? formData.name.charAt(0) : 'A'}
+                          {values.name ? values.name.charAt(0) : 'A'}
                         </div>
                       </div>
                       <div>

@@ -1,0 +1,101 @@
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background: $color-gray-50;
+
+  &__content {
+    text-align: center;
+    max-width: 500px;
+    padding: 2rem;
+    background: white;
+    border-radius: $border-radius-xl;
+    box-shadow: $shadow-lg;
+  }
+
+  &__icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+  }
+
+  &__title {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $color-gray-900;
+    margin-bottom: 1rem;
+  }
+
+  &__message {
+    font-size: $font-size-base;
+    color: $color-gray-600;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  &__retry-btn,
+  &__reload-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: $border-radius-lg;
+    font-weight: $font-weight-medium;
+    cursor: pointer;
+    transition: $transition-fast;
+    border: none;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  &__retry-btn {
+    background: $color-primary-500;
+    color: white;
+
+    &:hover {
+      background: $color-primary-600;
+    }
+  }
+
+  &__reload-btn {
+    background: $color-gray-200;
+    color: $color-gray-700;
+
+    &:hover {
+      background: $color-gray-300;
+    }
+  }
+
+  &__details {
+    margin-top: 2rem;
+    text-align: left;
+    background: $color-gray-100;
+    border-radius: $border-radius-md;
+    padding: 1rem;
+
+    summary {
+      cursor: pointer;
+      font-weight: $font-weight-medium;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__error-stack {
+    font-family: 'Courier New', monospace;
+    font-size: $font-size-sm;
+    color: $color-danger-700;
+    background: white;
+    padding: 1rem;
+    border-radius: $border-radius-sm;
+    overflow-x: auto;
+    white-space: pre-wrap;
+  }
+}
+

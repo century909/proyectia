@@ -32,7 +32,7 @@ const toastReducer = (state, action) => {
 const ToastContext = createContext();
 
 // Provider component
-export const ToastProvider = ({ children }) => {
+export const ToastProvider = ({ children, position = 'top-right' }) => {
   const [state, dispatch] = useReducer(toastReducer, initialState);
 
   const addToast = (message, type = 'info', duration = 3000) => {
@@ -66,7 +66,7 @@ export const ToastProvider = ({ children }) => {
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
-      <ToastContainer toasts={state.toasts} removeToast={removeToast} />
+      <ToastContainer toasts={state.toasts} removeToast={removeToast} position={position} />
     </ToastContext.Provider>
   );
 };

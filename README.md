@@ -4,7 +4,7 @@ A chat application with AI characters, built with React, Node.js, and PostgreSQL
 
 ## Project Structure
 
-- `/frontend` - React application with TailwindCSS
+- `/frontend` - React application with SCSS
 - `/backend` - Node.js/Express API with JWT authentication
 - `/database` - PostgreSQL database schema
 
@@ -20,12 +20,12 @@ A chat application with AI characters, built with React, Node.js, and PostgreSQL
 
 1. Create a new PostgreSQL database:
    ```sql
-   CREATE DATABASE tipsy_chat;
+   CREATE DATABASE seiki;
    ```
 
 2. Run the schema file to create tables:
    ```bash
-   psql -d tipsy_chat -f database/schema.sql
+   psql -d seiki -f database/schema.sql
    ```
 
 ### 2. Backend Setup
@@ -102,7 +102,7 @@ The backend is built with Node.js and Express, featuring:
 
 ### Frontend
 
-The frontend is built with React and TailwindCSS, featuring:
+The frontend is built with React and SCSS, featuring:
 
 - Responsive design
 - React Router for navigation

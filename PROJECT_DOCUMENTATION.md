@@ -18,13 +18,14 @@ Seiki Chat es una aplicación de chat con personajes de IA que permite a los usu
 ### Frontend
 - **React** para la interfaz de usuario
 - **React Router** para navegación
-- **SCSS** para estilos (aunque TailwindCSS está en dependencias, no está siendo utilizado)
+- **SCSS** para estilos
 - **Vite** como bundler de desarrollo
 - **Socket.IO Client** para comunicación en tiempo real (implementación planificada)
 
 ### Base de Datos
-- La documentación menciona **PostgreSQL** pero la implementación actual utiliza almacenamiento en memoria
+- **PostgreSQL** como base de datos
 - El esquema de base de datos está definido en `database/schema.sql`
+- La conexión a la base de datos está implementada en el backend
 
 ## Arquitectura del Proyecto
 
@@ -97,22 +98,12 @@ tipsy-chat/
 
 ### ⚠️ IMPORTANTE - LIMITACIONES DEL DESARROLLO
 
-1. **Datos No Persistentes**: 
-   - Todos los datos (usuarios, personajes, conversaciones, mensajes) se almacenan en memoria
-   - Los datos se pierden al reiniciar el servidor
-   - No hay conexión real a base de datos implementada
-
-2. **Respuestas de Personajes Simuladas**:
+1. **Respuestas de Personajes Simuladas**:
    - Las respuestas de los personajes son generadas mediante plantillas simples
    - No hay integración con modelos de lenguaje de IA reales
    - Las respuestas no son personalizadas según la personalidad del personaje
 
-3. **Chat en Tiempo Real No Implementado**:
-   - Socket.IO está incluido en las dependencias pero no está implementado
-   - La documentación en `REALTIME_CHAT.md` describe la implementación planificada
-   - Actualmente se utiliza una arquitectura RESTful
-
-4. **Frontend Parcialmente Implementado**:
+3. **Frontend Parcialmente Implementado**:
    - Estructura básica del proyecto React establecida
    - Componentes y rutas definidos pero sin implementación completa
    - Aunque el README menciona TailwindCSS y está en las dependencias, el proyecto utiliza SCSS para los estilos

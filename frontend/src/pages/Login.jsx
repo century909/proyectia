@@ -3,43 +3,60 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
 import { useToast } from '../contexts/ToastContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useFormValidation, validationRules } from '../hooks/useFormValidation';
+import { loginWithEmailPassword } from '../services/auth';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { addToast } = useToast();
+  const { login } = useAuth();
 
-  const validate = () => {
-    const newErrors = {};
-    if (!email) newErrors.email = 'Email is required';
-    if (!password) newErrors.password = 'Password is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    validateForm
+  } = useFormValidation(
+    { email: '', password: '' },
+    {
+      email: [
+        validationRules.required('El email es requerido'),
+        validationRules.email('Ingresa un email válido')
+      ],
+      password: [
+        validationRules.required('La contraseña es requerida'),
+        validationRules.minLength(6, 'Mínimo 6 caracteres')
+      ]
+    }
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validateForm()) return;
     
     setLoading(true);
-    setErrors({});
     
     try {
-      // Simulate API call
-      setTimeout(() => {
-        // For demo purposes, we'll just navigate to dashboard
-        // In a real app, you would call your API here
-        localStorage.setItem('token', 'demo-token');
-        navigate('/');
-        addToast('Welcome back! You have been successfully logged in.', 'success');
-        setLoading(false);
-      }, 1000);
+      const response = await loginWithEmailPassword({
+        email: values.email,
+        password: values.password
+      });
+      
+      login({ 
+        token: response.token, 
+        user: response.user 
+      });
+      
+      navigate('/');
+      addToast('¡Bienvenido! Has iniciado sesión correctamente.', 'success');
     } catch (err) {
-      setErrors({ general: 'Invalid email or password' });
-      addToast('Invalid email or password. Please try again.', 'error');
+      const errorMessage = err.message || 'Email o contraseña incorrectos. Inténtalo de nuevo.';
+      addToast(errorMessage, 'error');
+    } finally {
       setLoading(false);
     }
   };
@@ -60,11 +77,6 @@ const Login = () => {
         </div>
         <div className="bg-white/80 backdrop-blur-lg py-10 px-8 shadow-xl rounded-2xl border border-white/20 hover:shadow-2xl transition-shadow duration-300">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {errors.general && (
-              <div className="rounded-lg bg-danger-50 p-4 border border-danger-100">
-                <div className="text-sm text-danger-700 font-medium">{errors.general}</div>
-              </div>
-            )}
             <div>
               <Input
                 id="email-address"
@@ -73,9 +85,10 @@ const Login = () => {
                 type="email"
                 autoComplete="email"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                error={errors.email}
+                value={values.email}
+                onChange={(e) => handleChange('email', e.target.value)}
+                onBlur={() => handleBlur('email')}
+                error={touched.email ? errors.email : ''}
                 placeholder="you@example.com"
               />
             </div>
@@ -87,9 +100,10 @@ const Login = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                error={errors.password}
+                value={values.password}
+                onChange={(e) => handleChange('password', e.target.value)}
+                onBlur={() => handleBlur('password')}
+                error={touched.password ? errors.password : ''}
                 placeholder="••••••••"
               />
             </div>

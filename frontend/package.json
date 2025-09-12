@@ -17,6 +17,8 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:light": "node start-light.js",
+    "dev:safe": "NODE_OPTIONS='--max-old-space-size=1024' vite --host",
     "build": "vite build",
     "preview": "vite preview"
   }

@@ -16,10 +16,10 @@ The database uses PostgreSQL and consists of the following tables:
 
 1. Create a new PostgreSQL database:
    ```sql
-   CREATE DATABASE tipsy_chat;
+   CREATE DATABASE seiki;
    ```
 
 2. Run the schema file to create tables:
    ```bash
-   psql -d tipsy_chat -f schema.sql
+   psql -d seiki -f schema.sql
    ```
