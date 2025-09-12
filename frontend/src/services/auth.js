@@ -5,8 +5,8 @@ export async function loginWithEmailPassword({ email, password }) {
   return api.post('/auth/login', { email, password });
 }
 
-export async function registerWithEmailPassword({ name, email, password }) {
-  return api.post('/auth/register', { name, email, password });
+export async function registerWithEmailPassword({ username, email, password }) {
+  return api.post('/auth/register', { username, email, password });
 }
 
 export async function getCurrentUser() {

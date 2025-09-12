@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import { registerWithEmailPassword } from '../services/auth';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -35,21 +36,44 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    console.log('Form submitted with data:', formData);
+    
+    if (!validate()) {
+      console.log('Validation failed');
+      return;
+    }
     
     setLoading(true);
     setErrors({});
     
     try {
-      // Simulate API call
-      setTimeout(() => {
-        // For demo purposes, we'll just navigate to login
-        // In a real app, you would call your API here
-        navigate('/login');
-        setLoading(false);
-      }, 1000);
+      console.log('Attempting to register user...');
+      const response = await registerWithEmailPassword({
+        username: formData.name,
+        email: formData.email,
+        password: formData.password
+      });
+      
+      console.log('Registration response:', response);
+      
+      if (response.success) {
+        // Registration successful, navigate to login
+        console.log('Registration successful, navigating to login');
+        navigate('/login', { 
+          state: { 
+            message: 'Registration successful! Please log in with your credentials.' 
+          }
+        });
+      } else {
+        console.log('Registration failed:', response.message);
+        setErrors({ general: response.message || 'Registration failed. Please try again.' });
+      }
     } catch (err) {
-      setErrors({ general: 'Registration failed. Please try again.' });
+      console.error('Registration error:', err);
+      setErrors({ 
+        general: err.message || 'Registration failed. Please try again.' 
+      });
+    } finally {
       setLoading(false);
     }
   };
