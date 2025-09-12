@@ -34,6 +34,11 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const login = useCallback(async ({ token: newToken, user: newUser }) => {
+    // Clear any existing state first
+    setToken(null);
+    setUser(null);
+    
+    // Set new authentication state
     setToken(newToken || null);
     setUser(newUser || null);
   }, []);
@@ -41,8 +46,18 @@ export function AuthProvider({ children }) {
   const logout = useCallback(() => {
     // Disconnect socket before logout
     disconnectSocket();
+    
+    // Clear all authentication state
     setToken(null);
     setUser(null);
+    
+    // Clear localStorage
+    try {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+    } catch (_) {}
+    
+    // Clear any cached API token
+    setAuthToken(null);
   }, []);
 
   const value = useMemo(() => ({

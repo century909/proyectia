@@ -8,6 +8,7 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { Pool } = require('pg');
+const { generateAIResponse, generateFallbackResponse } = require('./aiService');
 
 const app = express();
 const server = http.createServer(app);
@@ -67,7 +68,21 @@ const generateToken = (user) => {
   );
 };
 
-const generateCharacterResponse = (character, userMessage) => {
+// Updated to use AI service with fallback
+const generateCharacterResponse = async (character, userMessage, conversationHistory = []) => {
+  try {
+    // Try to get AI response first
+    const aiResponse = await generateAIResponse(character, userMessage, conversationHistory);
+    return aiResponse;
+  } catch (error) {
+    console.error('Error generating AI response:', error);
+    // Fallback to simulated response if AI fails
+    return generateFallbackResponse(character, userMessage);
+  }
+};
+
+// Keep the old function as fallback
+const generateCharacterResponseOld = (character, userMessage) => {
   const { name, personality, description } = character;
   const personalityTraits = personality ? personality.toLowerCase().split(',').map(t => t.trim()) : [];
   
@@ -583,7 +598,7 @@ app.post('/api/messages', verifyToken, async (req, res) => {
     const characterResult = await pool.query('SELECT * FROM characters WHERE id = $1', [conversation.character_id]);
     const character = characterResult.rows[0];
     
-    const characterReplyContent = generateCharacterResponse(character, content);
+    const characterReplyContent = await generateCharacterResponse(character, content);
     const characterReplyResult = await pool.query(
       'INSERT INTO messages (conversation_id, sender_type, content) VALUES ($1, $2, $3) RETURNING *',
       [conversation_id, 'character', characterReplyContent]
@@ -746,7 +761,7 @@ io.on('connection', (socket) => {
       const character = characterResult.rows[0];
       
       // Generate AI response based on character personality
-      const characterReplyContent = generateCharacterResponse(character, content);
+      const characterReplyContent = await generateCharacterResponse(character, content);
       
       // Save character reply
       const characterReplyResult = await pool.query(
