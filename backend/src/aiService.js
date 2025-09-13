@@ -1,7 +1,7 @@
 const { HfInference } = require('@huggingface/inference');
 
-// Initialize Hugging Face Inference
-const hf = new HfInference();
+// Initialize Hugging Face Inference with API key if available
+const hf = new HfInference(process.env.HUGGINGFACE_API_KEY);
 
 // Fallback responses for when AI is not available
 const generateFallbackResponse = (character, userMessage) => {
@@ -40,12 +40,14 @@ const generateFallbackResponse = (character, userMessage) => {
       `The ancient texts speak of ${userMessage}. Let me share what I know.`
     ];
   } else {
-    // Default responses
+    // Default responses - more natural and engaging
     responseTemplates = [
-      `That's interesting! ${userMessage} - tell me more about that.`,
-      `I see... ${userMessage}. What do you think about that?`,
-      `Hmm, ${userMessage}. That's something to think about.`,
-      `I understand. ${userMessage} - that's quite fascinating.`
+      `¡Hola! Me alegra que me hables sobre ${userMessage}. ¿Podrías contarme más detalles?`,
+      `Interesante... ${userMessage}. Me gustaría saber tu opinión al respecto.`,
+      `Ah, ${userMessage}. Eso me hace pensar en muchas cosas. ¿Qué más tienes en mente?`,
+      `Entiendo perfectamente. ${userMessage} es un tema fascinante. ¿Cómo llegaste a esa conclusión?`,
+      `Wow, ${userMessage}. Nunca había pensado en eso de esa manera. ¿Podrías explicarme más?`,
+      `Me encanta que me cuentes sobre ${userMessage}. Es muy interesante tu perspectiva.`
     ];
   }
   
@@ -55,30 +57,23 @@ const generateFallbackResponse = (character, userMessage) => {
 // Generate AI response using Hugging Face
 const generateAIResponse = async (character, userMessage, conversationHistory = []) => {
   try {
+    if (!process.env.HUGGINGFACE_API_KEY) {
+      return generateFallbackResponse(character, userMessage);
+    }
+    
     const { name, personality, description } = character;
     
-    // Create a system prompt based on character personality
-    const systemPrompt = `You are ${name}, a character with the following traits:
-    
-Description: ${description || 'A unique individual'}
-Personality: ${personality || 'Friendly and helpful'}
+    // Simple prompt for better compatibility
+    const prompt = `You are ${name}. ${description || 'A friendly character'}. 
+User says: "${userMessage}"
+${name} responds:`;
 
-You should respond in character, staying true to your personality. Keep responses conversational and engaging, but not too long (1-3 sentences).`;
-
-    // Build conversation context
-    let conversationContext = conversationHistory
-      .slice(-5) // Last 5 messages for context
-      .map(msg => `${msg.sender_type === 'user' ? 'User' : name}: ${msg.content}`)
-      .join('\n');
-
-    const fullPrompt = `${systemPrompt}\n\nConversation so far:\n${conversationContext}\n\nUser: ${userMessage}\n${name}:`;
-
-    // Use Hugging Face Inference API with a free model
+    // Use Hugging Face Inference API with a simple model
     const response = await hf.textGeneration({
-      model: 'microsoft/DialoGPT-medium', // Free model for chat
-      inputs: fullPrompt,
+      model: 'gpt2',
+      inputs: prompt,
       parameters: {
-        max_new_tokens: 100,
+        max_new_tokens: 30,
         temperature: 0.7,
         do_sample: true,
         return_full_text: false
@@ -89,24 +84,23 @@ You should respond in character, staying true to your personality. Keep response
     let aiResponse = response.generated_text;
     
     // Clean up the response
-    if (aiResponse) {
-      // Remove any remaining prompt text
-      aiResponse = aiResponse.replace(fullPrompt, '').trim();
+    if (aiResponse && aiResponse.trim().length > 0) {
+      // Remove the prompt from the response
+      aiResponse = aiResponse.replace(prompt, '').trim();
       
-      // Remove any duplicate character names
-      aiResponse = aiResponse.replace(new RegExp(`^${name}:\\s*`, 'i'), '').trim();
+      // Clean up any unwanted characters
+      aiResponse = aiResponse.replace(/^[^a-zA-ZáéíóúÁÉÍÓÚñÑ]*/, '').trim();
       
-      // Ensure response is not empty and not too long
-      if (aiResponse.length > 0 && aiResponse.length < 500) {
+      // Ensure response is reasonable length
+      if (aiResponse.length > 0 && aiResponse.length < 200) {
         return aiResponse;
       }
     }
     
-    // If AI response is invalid, use fallback
     return generateFallbackResponse(character, userMessage);
     
   } catch (error) {
-    console.error('AI Service Error:', error);
+    console.error('AI Service Error:', error.message);
     // Fallback to simulated response if AI fails
     return generateFallbackResponse(character, userMessage);
   }

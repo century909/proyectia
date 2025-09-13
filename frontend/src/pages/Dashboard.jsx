@@ -36,6 +36,10 @@ const Dashboard = () => {
     const loadData = async () => {
       setIsLoading(true);
       setError(null);
+      
+      // Small delay to ensure token is properly set after login
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       try {
         const [charactersRes, conversationsRes, tokensRes] = await Promise.all([
           getCharacters(),

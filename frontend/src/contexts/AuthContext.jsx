@@ -34,11 +34,7 @@ export function AuthProvider({ children }) {
   }, [token]);
 
   const login = useCallback(async ({ token: newToken, user: newUser }) => {
-    // Clear any existing state first
-    setToken(null);
-    setUser(null);
-    
-    // Set new authentication state
+    // Set new authentication state directly
     setToken(newToken || null);
     setUser(newUser || null);
   }, []);
